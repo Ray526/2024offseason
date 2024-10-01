@@ -1,22 +1,32 @@
 package frc.robot.commands;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.FSLib.math.PID;
 import frc.FSLib.math.simplePID;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class TeleopSwerve extends Command {
   private Swerve s_Swerve;
+  private PoseEstimatorSubsystem poseEstimater;
   private XboxController driver;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
@@ -26,13 +36,35 @@ public class TeleopSwerve extends Command {
   private double translationVal;
   private double strafeVal;
   private double rotationVal;
+  private double ema;
 
-  private simplePID zPID = new simplePID(2, 0);
+  public double KP = 0.008;
+  public double KI = 0.0;
+  public double KD = 0.01;
+  public double WindUp = 0.0;
+  public double Limit = 0.0;
+  public double Smooth = 0.075;
+  
+  private PID facingPID = new PID(KP, KI, KD, WindUp, Limit);
 
-  public TeleopSwerve(Swerve s_Swerve, XboxController controller) {
+  // Constants such as camera and target height stored. Change per robot and goal!
+  private final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7.4);
+  private final double TARGET_HEIGHT_METERS = Units.inchesToMeters(54);
+  // Angle between horizontal and the camera.
+  private final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(20);
+  //chage the name accordingly
+  PhotonCamera camera = new PhotonCamera("photonvision");
+
+  public TeleopSwerve(Swerve s_Swerve, PoseEstimatorSubsystem poseEstimater, XboxController controller) {
     this.s_Swerve = s_Swerve;
+    this.poseEstimater = poseEstimater;
     this.driver = controller;
-    addRequirements(s_Swerve);
+    addRequirements(s_Swerve, poseEstimater);
+  }
+
+  @Override
+  public void initialize() {
+    rotationVal = 0;
   }
 
   @Override
@@ -43,37 +75,40 @@ public class TeleopSwerve extends Command {
       s_Swerve.setPose(new Pose2d());
     }
 
+    var vision = camera.getLatestResult();
+    
     /* Get Values, Deadband */
     translationVal = translationLimiter.calculate(
-        MathUtil.applyDeadband(-driver.getLeftY() * 0.5, Constants.SwerveConstants.axisDeadBand));
+        MathUtil.applyDeadband(-driver.getLeftY()*0.6, Constants.SwerveConstants.axisDeadBand));
     strafeVal = strafeLimiter.calculate(
-        MathUtil.applyDeadband(-driver.getLeftX() * 0.5, Constants.SwerveConstants.axisDeadBand));
+        MathUtil.applyDeadband(-driver.getLeftX()*0.6, Constants.SwerveConstants.axisDeadBand));
     rotationVal = 
       rotationLimiter
-        .calculate(MathUtil.applyDeadband(driver.getRightX() * 1, Constants.SwerveConstants.axisDeadBand));
+        .calculate(MathUtil.applyDeadband(-driver.getRightX(), Constants.SwerveConstants.axisDeadBand));
 
-    if (driver.getLeftBumper()) {
+    if (driver.getLeftBumper() && vision.hasTargets()) {
+    
+    /* Get Values, Deadband */
+    translationVal = translationLimiter.calculate(
+        MathUtil.applyDeadband(driver.getLeftY(), 0.01));
+    strafeVal = strafeLimiter.calculate(
+        MathUtil.applyDeadband(driver.getLeftX(), 0.01));
 
-      double zTarget;
-      if (DriverStation.getAlliance().isPresent() ) {
-        if (DriverStation.getAlliance().get() == Alliance.Blue) {
-          zTarget = FieldConstants.blueSpeakerCoord.minus(s_Swerve.getOdometryPose().getTranslation()).getAngle().getRotations();
-        } else {
-          zTarget = FieldConstants.redSpeakerCoord.minus(s_Swerve.getOdometryPose().getTranslation()).getAngle().getRotations();
-        }
-      } else {
-        zTarget = s_Swerve.getYaw().getRotations();
-      }
+    double range = PhotonUtils.calculateDistanceToTargetMeters(
+                      CAMERA_HEIGHT_METERS,
+                      TARGET_HEIGHT_METERS,
+                      CAMERA_PITCH_RADIANS,
+                      Units.degreesToRadians(vision.getBestTarget().getPitch()));
 
-      double z = s_Swerve.getYaw().getRotations();
-      z -= Math.floor(z);
-      if (z > 0.5) z -= 1;
-      s_Swerve.drive(
-        new Translation2d(translationVal, strafeVal).times(SwerveConstants.maxModuleSpeed),
-        zPID.calculate(z, zTarget) * SwerveConstants.maxAngularVelocity,
-        true,
-        false
-      );
+    SmartDashboard.putNumber("range", range);
+
+
+    ema = Smooth*facingPID.calculate(vision.getBestTarget().getYaw())+(1-Smooth)*ema;
+    rotationVal = ema;
+    rotationVal = - facingPID.calculate(vision.getBestTarget().getYaw());
+    SmartDashboard.putNumber("output", rotationVal);
+    SmartDashboard.putNumber("damm", vision.getBestTarget().getYaw());
+    SmartDashboard.putNumber("speed", rotationVal);
 
     } else {
       s_Swerve.drive(

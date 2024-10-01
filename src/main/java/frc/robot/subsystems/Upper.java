@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -32,12 +33,16 @@ public class Upper extends SubsystemBase {
     public Upper () {
         configElbow();
         configShooter();
+        configIntake();
+        intake.setInverted(true);
     }
 
     // config
     public void configElbow () {
         leftElbow.setInverted(false);
         rightElbow.setInverted(true);
+        leftElbow.setNeutralMode(NeutralModeValue.Brake);
+        rightElbow.setNeutralMode(NeutralModeValue.Brake);
         elbowCancoder.getConfigurator().apply(
             new CANcoderConfiguration().MagnetSensor.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Signed_PlusMinusHalf)
         );
@@ -50,6 +55,10 @@ public class Upper extends SubsystemBase {
         rightShooter.setInverted(false);
         leftShooter.setIdleMode(IdleMode.kCoast);
         rightShooter.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void configIntake () {
+        intake.setIdleMode(IdleMode.kBrake);
     }
 
     // elbow
