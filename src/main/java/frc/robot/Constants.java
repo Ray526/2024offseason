@@ -103,7 +103,7 @@ public class Constants {
         public static final AngularVelocity SHOOTER_GROUND_SPEED = AngularVelocity.fromRevPM(0);
         public static final AngularVelocity SHOOTER_PREENDGAME_SPEED = AngularVelocity.fromRevPM(0);
         public static final AngularVelocity SHOOTER_SHOOT_SPEED = AngularVelocity.fromRevPM(-3000);
-        public static final AngularVelocity SHOOTER_SPEAKER_SPEED = AngularVelocity.fromRevPM(-3000);
+        public static final AngularVelocity SHOOTER_SPEAKER_SPEED = AngularVelocity.fromRevPM(-4000);
         public static final AngularVelocity SHOOTER_BASE_SPEED = AngularVelocity.fromRevPM(-3000);
 
         public static final double SHOOTER_LEGAL_SPEED = 4000;

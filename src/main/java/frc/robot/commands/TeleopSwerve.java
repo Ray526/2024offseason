@@ -113,7 +113,7 @@ public class TeleopSwerve extends Command {
     } else {
       s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(SwerveConstants.maxModuleSpeed),
-        rotationVal, true,
+        rotationVal * SwerveConstants.maxAngularVelocity, true,
         false
       );
     }

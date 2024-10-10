@@ -8,9 +8,10 @@
     "X2"
   ],
   "autoFolders": [
-    "X3",
+    "Choreo",
     "X1",
-    "X2"
+    "X2",
+    "X3"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

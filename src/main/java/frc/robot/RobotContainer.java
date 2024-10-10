@@ -84,8 +84,8 @@ public class RobotContainer {
       new PathPlannerAuto("MB-X1")
       ),
       new ParallelCommandGroup(
-        new PathPlannerAuto("X1-MB"),
-        // new PathPlannerAuto("C-X1-MB"),
+        // new PathPlannerAuto("X1-MB"),
+        new PathPlannerAuto("C-X1-MB"),
         new SHOOT(s_Upper)),
       new ParallelRaceGroup(
         new GROUND(s_Upper),
@@ -100,8 +100,8 @@ public class RobotContainer {
         new PathPlannerAuto("MB-X3")
       ),
       new ParallelCommandGroup(
-        new PathPlannerAuto("X3-MB"),
-        // new PathPlannerAuto("C-X3-MB"),
+        // new PathPlannerAuto("X3-MB"),
+        new PathPlannerAuto("C-X3-MB"),
         new SHOOT(s_Upper)
       )
     );
