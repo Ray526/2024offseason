@@ -7,8 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.PoseEstimator;
+import frc.robot.Constants.FieldConstants;
+// import frc.robot.Constants.PoseEstimator;
 import frc.robot.Constants.UpperStateMachine;
+import frc.robot.subsystems.PoseEstimatorSubsystem;
+import frc.robot.subsystems.Swerve;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -16,20 +19,20 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private UpperStateMachine upperStateMachine;
-  private PoseEstimator poseEstimator;
+  private PoseEstimatorSubsystem poseEstimator;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     upperStateMachine = new UpperStateMachine();
-    poseEstimator = new PoseEstimator();
+    // poseEstimator = new PoseEstimator();
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     upperStateMachine.update();
-    poseEstimator.update();
+    // poseEstimator.update();
   }
 
   @Override

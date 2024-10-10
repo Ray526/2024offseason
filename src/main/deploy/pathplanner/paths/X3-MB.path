@@ -3,39 +3,34 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3496516320436418,
-        "y": 5.5427499053949605
+        "x": 2.543657469625922,
+        "y": 4.098792791023527
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0028452612959042,
-        "y": 5.982110618929758
+        "x": 2.1806215367066955,
+        "y": 4.403274541213847
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "X3"
     },
     {
       "anchor": {
-        "x": 2.5796210954747356,
-        "y": 6.794764533612978
+        "x": 1.47,
+        "y": 5.550936522700434
       },
       "prevControl": {
-        "x": 1.8463900604931267,
-        "y": 6.561915186610642
+        "x": 1.7067905459634023,
+        "y": 5.153704602844297
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Y1"
+      "linkedName": "MB"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1,
-      "rotationDegrees": 35.0,
-      "rotateFast": false
-    },
-    {
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -50,11 +45,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 35.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "X",
+  "folder": "X3",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
