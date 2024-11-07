@@ -2,24 +2,24 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.60221165235483,
-      "y": 5.539225686154654
+      "x": 1.3516291379928589,
+      "y": 5.567087650299072
     },
-    "rotation": 0
+    "rotation": 1.6169171244269624e-28
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "sequential",
           "data": {
-            "pathName": "X2-MB"
+            "commands": []
           }
         }
       ]
     }
   },
-  "folder": "X2",
-  "choreoAuto": false
+  "folder": "Choreo",
+  "choreoAuto": true
 }

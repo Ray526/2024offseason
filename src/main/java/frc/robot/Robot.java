@@ -8,9 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.FieldConstants;
-// import frc.robot.Constants.PoseEstimator;
 import frc.robot.Constants.UpperStateMachine;
-import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class Robot extends TimedRobot {
@@ -19,7 +17,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private UpperStateMachine upperStateMachine;
-  private PoseEstimatorSubsystem poseEstimator;
 
   @Override
   public void robotInit() {

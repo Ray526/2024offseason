@@ -5,6 +5,10 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +19,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import static edu.wpi.first.math.util.Units.degreesToRadians;
 import static edu.wpi.first.math.util.Units.inchesToMeters;
@@ -51,6 +57,16 @@ public class Constants {
           new Pose2d(new Translation2d(15.07, 5.5), Rotation2d.fromDegrees(-180));
         public static final Pose2d RED_RB =
           new Pose2d(new Translation2d(15.85, 6.75), Rotation2d.fromDegrees(-120));
+
+        public static final Pose2d X1 =
+            new Pose2d(new Translation2d(2.56, 6.99), Rotation2d.fromDegrees(0));
+        public static final Pose2d X2 =
+            new Pose2d(new Translation2d(2.56, 5.55), Rotation2d.fromDegrees(0));
+        public static final Pose2d X3 =
+            new Pose2d(new Translation2d(2.56, 4.10), Rotation2d.fromDegrees(0));
+
+        public static final Pose2d X2_STAGE = 
+            new Pose2d(new Translation2d(4.12, 5.25), Rotation2d.fromDegrees(0));
       }
 
     public static final class UpperConstants {
@@ -83,7 +99,7 @@ public class Constants {
         public static final Rotation2d Elbow_ENDGAME_POS = Rotation2d.fromRotations(-0.398438);
         public static final Rotation2d ELBOW_GROUND_POS = Rotation2d.fromRotations(-0.398438);
         public static final Rotation2d ELBOW_PREENDGAME_POS = Rotation2d.fromRotations(-0.170166);
-        public static final Rotation2d ELBOW_BASE_POSE = Rotation2d.fromRotations(-0.355);
+        public static final Rotation2d ELBOW_BASE_POSE = Rotation2d.fromRotations(-0.325);
 
         public static final AngularVelocity INTAKE_AMP_SPEED = AngularVelocity.fromRevPM(0);
         public static final AngularVelocity INTAKE_DEFAULT_SPEED = AngularVelocity.fromRevPM(0);
@@ -104,9 +120,9 @@ public class Constants {
         public static final AngularVelocity SHOOTER_PREENDGAME_SPEED = AngularVelocity.fromRevPM(0);
         public static final AngularVelocity SHOOTER_SHOOT_SPEED = AngularVelocity.fromRevPM(-3000);
         public static final AngularVelocity SHOOTER_SPEAKER_SPEED = AngularVelocity.fromRevPM(-4000);
-        public static final AngularVelocity SHOOTER_BASE_SPEED = AngularVelocity.fromRevPM(-3000);
+        public static final AngularVelocity SHOOTER_BASE_SPEED = AngularVelocity.fromRevPM(-4500);
 
-        public static final double SHOOTER_LEGAL_SPEED = 4000;
+        public static final double SHOOTER_LEGAL_SPEED = 4500;
 
     }
 
@@ -288,7 +304,7 @@ public class Constants {
         public static final int driveMotorID = 11;
         public static final int angleMotorID = 12;
         public static final int canCoderID = 1;
-        public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.37416);
+        public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.374756);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
@@ -298,7 +314,7 @@ public class Constants {
         public static final int driveMotorID = 21;
         public static final int angleMotorID = 22;
         public static final int canCoderID = 2;
-        public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.457124);
+        public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.456543);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
@@ -307,18 +323,19 @@ public class Constants {
         public static final int driveMotorID = 31;
         public static final int angleMotorID = 32;
         public static final int canCoderID = 3;
-        public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.059325);
+        public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.053711);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
         new PIDConstants(3, 0, 0.005), // Translation constants 
-        new PIDConstants(0.5, 0, 0), // Rotation constants 
+        new PIDConstants(2, 0, 0), // Rotation constants 
         maxModuleSpeed, 
         LFModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
-        new ReplanningConfig(true, // Should the path be replanned at the start of path following if the robot is not already at the starting point?
-         true) // Should the path be replanned if the error grows too large or if a large error spike happens while following the path?
-    );
+        new ReplanningConfig(), // Should the path be replanned at the start of path following if the robot is not already at the starting point?,
+                                // Should the path be replanned if the error grows too large or if a large error spike happens while following the path?
+        0.004
+         );
 
     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
       SwerveConstants.LFModuleOffset, 
@@ -373,26 +390,21 @@ public class Constants {
 //             }
 //     }
 
-    public static class VisionConstants {
+public static class Vision {
+    public static final String kCameraName = "YOUR CAMERA NAME";
+    // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
+    public static final Transform3d kRobotToCam =
+            new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
 
-    /** Physical location of the apriltag camera on the robot, relative to the center of the robot. */
-    public static final Transform3d APRILTAG_CAMERA_TO_ROBOT = new Transform3d(//37" 35" 18.3"
-        new Translation3d(inchesToMeters(0), inchesToMeters(18.3), inchesToMeters(7.4)),
-        new Rotation3d(0.0, degreesToRadians(15.0), degreesToRadians(180)));
+    // The layout of the AprilTags on the field
+    public static final AprilTagFieldLayout kTagLayout =
+            AprilTagFields.kDefaultField.loadAprilTagLayoutField();
 
-    public static final String LIMELIGHT_NAME = "limelight";
-    
-    public static final double FIELD_LENGTH_METERS = 16.54175;
-    public static final double FIELD_WIDTH_METERS = 8.0137;
-
-    // Pose on the opposite side of the field. Use with `relativeTo` to flip a pose to the opposite alliance
-    public static final Pose2d FLIPPING_POSE = new Pose2d(
-        new Translation2d(FIELD_LENGTH_METERS, FIELD_WIDTH_METERS),
-        new Rotation2d(Math.PI));
-
-    /** Minimum target ambiguity. Targets with higher ambiguity will be discarded */
-    public static final double APRILTAG_AMBIGUITY_THRESHOLD = 0.2;
-  }
+    // The standard deviations of our vision estimated poses, which affect correction rate
+    // (Fake values. Experiment and determine estimation noise on an actual robot.)
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+}
 
     public static final class MapConstants {
         

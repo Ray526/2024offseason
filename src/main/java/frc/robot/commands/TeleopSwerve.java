@@ -21,12 +21,10 @@ import frc.FSLib.math.simplePID;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Swerve;
 
 public class TeleopSwerve extends Command {
   private Swerve s_Swerve;
-  private PoseEstimatorSubsystem poseEstimater;
   private XboxController driver;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
@@ -55,11 +53,10 @@ public class TeleopSwerve extends Command {
   //chage the name accordingly
   PhotonCamera camera = new PhotonCamera("photonvision");
 
-  public TeleopSwerve(Swerve s_Swerve, PoseEstimatorSubsystem poseEstimater, XboxController controller) {
+  public TeleopSwerve(Swerve s_Swerve, XboxController controller) {
     this.s_Swerve = s_Swerve;
-    this.poseEstimater = poseEstimater;
     this.driver = controller;
-    addRequirements(s_Swerve, poseEstimater);
+    addRequirements(s_Swerve);
   }
 
   @Override
@@ -71,17 +68,16 @@ public class TeleopSwerve extends Command {
   public void execute() {
 
     if (driver.getBackButton()) {
-      s_Swerve.setYaw(Rotation2d.fromDegrees(0));
-      s_Swerve.setPose(new Pose2d());
+      s_Swerve.setPose(FieldConstants.BLUE_MB);
     }
 
     var vision = camera.getLatestResult();
     
     /* Get Values, Deadband */
     translationVal = translationLimiter.calculate(
-        MathUtil.applyDeadband(-driver.getLeftY()*0.6, Constants.SwerveConstants.axisDeadBand));
+        MathUtil.applyDeadband(-driver.getLeftY(), Constants.SwerveConstants.axisDeadBand));
     strafeVal = strafeLimiter.calculate(
-        MathUtil.applyDeadband(-driver.getLeftX()*0.6, Constants.SwerveConstants.axisDeadBand));
+        MathUtil.applyDeadband(-driver.getLeftX(), Constants.SwerveConstants.axisDeadBand));
     rotationVal = 
       rotationLimiter
         .calculate(MathUtil.applyDeadband(-driver.getRightX(), Constants.SwerveConstants.axisDeadBand));

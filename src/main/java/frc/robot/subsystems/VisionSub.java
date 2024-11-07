@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.FSLib.math.NoiseFilter;
 
-public class Vision extends SubsystemBase {
+public class VisionSub extends SubsystemBase { // actually i forgot what this is ...
 
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     private final NetworkTableEntry tx = table.getEntry("tx");

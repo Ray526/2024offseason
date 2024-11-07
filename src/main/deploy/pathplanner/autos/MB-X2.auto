@@ -6,20 +6,20 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 2.0
+            "pathName": "MB-X2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MB-X2"
+            "pathName": "X2-MB"
           }
         }
       ]
     }
   },
-  "folder": "X2",
+  "folder": null,
   "choreoAuto": false
 }
