@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.RobotConstants;
 
 public class Swerve extends SubsystemBase {
@@ -53,11 +54,11 @@ public class Swerve extends SubsystemBase {
 
   private final SwerveDriveKinematics kinematics =
     new SwerveDriveKinematics(
-      SwerveConstants.LFModuleOffset, 
-      SwerveConstants.RFModuleOffset, 
-      SwerveConstants.LRModuleOffset, 
-      SwerveConstants.RRModuleOffset
-    )
+      mSwerveMods[0].getSwerveModuleConstants().getModuleOffset(),
+      mSwerveMods[1].getSwerveModuleConstants().getModuleOffset(),
+      mSwerveMods[2].getSwerveModuleConstants().getModuleOffset(),
+      mSwerveMods[3].getSwerveModuleConstants().getModuleOffset()
+    );
 
   private SwerveDriveOdometry swerveOdometry = new SwerveDriveOdometry(kinematics, getGyroYaw(), getPositions());
 
@@ -68,13 +69,12 @@ public class Swerve extends SubsystemBase {
 
   private ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds();
 
-  private Pose2d[] mModulePoses = new Pose2d[4];
-
   private Pose2d mRobotPose = new Pose2d();
 
   ShuffleboardTab tab = Shuffleboard.getTab("Swerve");
 
   public Swerve() {
+    setPose(FieldConstants.BLUE_MB);
 
     // Define the standard deviations for the pose estimator, which determine how fast the pose
         // estimate converges to the vision measurement. This should depend on the vision measurement
@@ -91,10 +91,8 @@ public class Swerve extends SubsystemBase {
                         stateStdDevs,
                         visionStdDevs);
 
-    // gyro.setYaw(0);
-
     AutoBuilder.configureHolonomic(
-      this::getOdometryPose, // Robot pose supplier (getOdometryPose or getPoseEstimated)
+      this::getEstimatedPose, // Robot pose supplier (getOdometryPose or getPoseEstimated)
       this::setPose,  // Method to reset odometry (will be called if your auto has a starting pose)
       this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
       this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
@@ -131,8 +129,13 @@ public class Swerve extends SubsystemBase {
     return swerveOdometry.getPoseMeters();
   }
 
+  public Pose2d getEstimatedPose() {
+    return poseEstimator.getEstimatedPosition();
+  }
+
   public void setPose(Pose2d pose) {
     swerveOdometry.resetPosition(getGyroYaw(), getPositions(), pose);
+    poseEstimator.resetPosition(getGyroYaw(), getModulePositions(), pose);
   }
 
   public void resetOdometryPose(Pose2d pose) {
@@ -218,10 +221,9 @@ public class Swerve extends SubsystemBase {
   @Override
   public void periodic() {
     updateSwervePoses();
-    m_field.setRobotPose(mRobotPose);
-    m_field.getObject("Swerve Modules Pose").setPoses(mModulePoses);
-    
-    // m_field.setRobotPose(getOdometryPose());
+    // m_field.setRobotPose(mRobotPose);    
+    // m_field.setRobotPose(getEstimatedPose());
+    m_field.setRobotPose(getOdometryPose());
     SmartDashboard.putData("Field", m_field);
     // tab.add("Yaw", getGyroYaw())
     //   .withSize(2, 4)
@@ -282,7 +284,7 @@ public class Swerve extends SubsystemBase {
                     getPose()
                             .transformBy(
                                     new Transform2d(
-                                            module.getModuleConstants().centerOffset, module.getAbsoluteHeading()));
+                                            module.getSwerveModuleConstants().getModuleOffset(), module.getAngle()));
         }
         return modulePoses;
     }
@@ -290,4 +292,5 @@ public class Swerve extends SubsystemBase {
     public SwerveModulePosition[] getModulePositions() {
       return Arrays.stream(mSwerveMods).map(module -> module.getPosition()).toArray(SwerveModulePosition[]::new);
     }
+    
 }

@@ -60,20 +60,6 @@ public class TeleopUpper extends Command {
     @Override
     public void execute() {
 
-        // var vision = camera.getLatestResult();
-
-        // if (controller.getAButtonPressed() && vision.hasTargets()) {
-        // SmartDashboard.putNumber("X", vision.getBestTarget().getBestCameraToTarget().getX());
-        // double distanceToSpeaker = PhotonUtils.calculateDistanceToTargetMeters(
-        //               CAMERA_HEIGHT_METERS,
-        //               TARGET_HEIGHT_METERS,+
-        //               CAMERA_PITCH_RADIANS,
-        //               Units.degreesToRadians(vision.getBestTarget().getBestCameraToTarget().getX()));
-        // visionElbowTarget = Rotation2d.fromRotations(
-        // LinearRegression.calculate(MapConstants.DISTANCE_TO_ELBOW_AND_SHOOTER, distanceToSpeaker, 1));}
-        // if (visionElbowTarget != null && controller.getAButtonPressed()) {
-        // s_Upper.setElbow(-elbowPID.calculate(visionElbowTarget.getRotations() - s_Upper.getElbowRotation()));}
-
         if (controller.getYButtonPressed()) RobotConstants.upperState = RobotConstants.upperState == UpperState.GROUND ? UpperState.DEFAULT : UpperState.GROUND;
         if (controller.getXButtonPressed()) RobotConstants.upperState = RobotConstants.upperState == UpperState.AMP ? UpperState.DEFAULT : UpperState.AMP;
         if (controller.getAButtonPressed()) RobotConstants.upperState = RobotConstants.upperState == UpperState.SPEAKER ? UpperState.DEFAULT : UpperState.SPEAKER;

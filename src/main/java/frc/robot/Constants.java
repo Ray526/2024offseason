@@ -289,14 +289,15 @@ public class Constants {
         public static final Translation2d LRModuleOffset = new Translation2d(-wheelBase / 2.0, wheelBase / 2.0);
         public static final Translation2d RRModuleOffset = new Translation2d(-wheelBase / 2.0, -wheelBase / 2.0);
         
-        /* Module Specific Constants */
-        /* Front Left Module - Module 0 */
-        public static final class Mod0 {
+    /* Module Specific Constants */
+    /* Front Left Module - Module 0 */
+    public static final class Mod0 {
         public static final int driveMotorID = 1;
         public static final int angleMotorID = 2;
         public static final int canCoderID = 0;
         public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.590682);
-        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        public static final Translation2d moduleOffset = new Translation2d(wheelBase / 2.0, wheelBase / 2.0);
+        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, moduleOffset);
     }
 
     /* Front Right Module - Module 1 */
@@ -305,7 +306,8 @@ public class Constants {
         public static final int angleMotorID = 12;
         public static final int canCoderID = 1;
         public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.374756);
-        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        public static final Translation2d moduleOffset = new Translation2d(wheelBase / 2.0, -wheelBase / 2.0);
+        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, moduleOffset);
     }
 
 
@@ -315,7 +317,8 @@ public class Constants {
         public static final int angleMotorID = 22;
         public static final int canCoderID = 2;
         public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.456543);
-        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        public static final Translation2d moduleOffset = new Translation2d(-wheelBase / 2.0, wheelBase / 2.0);
+        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, moduleOffset);
     }
 
     /* Rear Right Module - Module 3 */
@@ -324,7 +327,8 @@ public class Constants {
         public static final int angleMotorID = 32;
         public static final int canCoderID = 3;
         public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.053711);
-        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        public static final Translation2d moduleOffset = new Translation2d(-wheelBase / 2.0, -wheelBase / 2.0);
+        public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, moduleOffset);
     }
 
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
@@ -391,10 +395,13 @@ public class Constants {
 //     }
 
 public static class Vision {
-    public static final String kCameraName = "YOUR CAMERA NAME";
+    public static final String OPCam = "OrangePiCamera";
+    public static final String ATCam = "AprilTagCamera";
     // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-    public static final Transform3d kRobotToCam =
+    public static final Transform3d kRobotToOPCam =
             new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0, 0, 0));
+    public static final Transform3d kRobotToATCam =
+            new Transform3d(new Translation3d(0.28, 0.0, 0.5), new Rotation3d(0, - Math.PI / 4 , Math.PI));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
@@ -404,6 +411,9 @@ public static class Vision {
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+
+    // Swerve Auto-align
+    public static final double angleKP = 1.5;
 }
 
     public static final class MapConstants {

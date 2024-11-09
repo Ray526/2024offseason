@@ -44,9 +44,11 @@ public class RobotContainer {
 
   private static Swerve s_Swerve = new Swerve();
 
+  private static Vision s_Vision = new Vision();
+
   private static Upper s_Upper = new Upper();
 
-  private final TeleopSwerve teleopSwerve = new TeleopSwerve(s_Swerve, controller);
+  private final TeleopSwerve teleopSwerve = new TeleopSwerve(s_Swerve, s_Vision, controller);
   private final TeleopUpper teleopUpper = new TeleopUpper(s_Upper, controller);
 
   private final SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
