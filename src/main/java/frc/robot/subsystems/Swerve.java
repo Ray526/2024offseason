@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants;
+import frc.robot.Vision;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.RobotConstants;
 
@@ -65,7 +66,7 @@ public class Swerve extends SubsystemBase {
   private Field2d m_field = new Field2d();
 
   // The robot pose estimator for tracking swerve odometry and applying vision corrections.
-  private final SwerveDrivePoseEstimator poseEstimator;
+  private SwerveDrivePoseEstimator poseEstimator;
 
   private ChassisSpeeds targetChassisSpeeds = new ChassisSpeeds();
 
@@ -74,7 +75,6 @@ public class Swerve extends SubsystemBase {
   ShuffleboardTab tab = Shuffleboard.getTab("Swerve");
 
   public Swerve() {
-    setPose(FieldConstants.BLUE_MB);
 
     // Define the standard deviations for the pose estimator, which determine how fast the pose
         // estimate converges to the vision measurement. This should depend on the vision measurement
@@ -103,6 +103,7 @@ public class Swerve extends SubsystemBase {
       },
       this
     );
+    setPose(FieldConstants.BLUE_MB);
     }
   
 

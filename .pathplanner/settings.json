@@ -3,9 +3,10 @@
   "robotLength": 0.86,
   "holonomicMode": true,
   "pathFolders": [
-    "X3",
+    "CleanUp",
     "X1",
-    "X2"
+    "X2",
+    "X3"
   ],
   "autoFolders": [
     "Choreo",

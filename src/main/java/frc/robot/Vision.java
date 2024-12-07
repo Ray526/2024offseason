@@ -97,24 +97,30 @@ public class Vision {
      *     used for estimation.
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-        // Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        // for (var change : ATCamera.getAllUnreadResults()) {
-        //     visionEst = photonEstimator.update(change);
-        //     updateEstimationStdDevs(visionEst, change.getTargets());
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        for (var change : ATCamera.getAllUnreadResults()) {
+            visionEst = photonEstimator.update(change);
+            updateEstimationStdDevs(visionEst, change.getTargets());
  
-        //     if (Robot.isSimulation()) {
-        //         visionEst.ifPresentOrElse(
-        //                 est ->
-        //                         getSimDebugField()
-        //                                 .getObject("VisionEstimation")
-        //                                 .setPose(est.estimatedPose.toPose2d()),
-        //                 () -> {
-        //                     getSimDebugField().getObject("VisionEstimation").setPoses();
-        //                 });
-        //     }
+            if (Robot.isSimulation()) {
+                visionEst.ifPresentOrElse(
+                        est ->
+                                getSimDebugField()
+                                        .getObject("VisionEstimation")
+                                        .setPose(est.estimatedPose.toPose2d()),
+                        () -> {
+                            getSimDebugField().getObject("VisionEstimation").setPoses();
+                        });
+            }
+        }
+        return visionEst;
+
+        // Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        // for (var change : ATCamera.) {
+        //     photonEstimator.update(change);
+
         // }
-        // return visionEst;
-        return Optional.empty();
+        // return Optional.empty();
     }
  
     /**
