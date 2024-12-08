@@ -8,12 +8,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MB-X2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "X2-MB"
           }
         }

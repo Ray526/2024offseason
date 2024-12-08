@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.47,
+        "x": 1.9112722961541362,
         "y": 5.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8893249771082712,
-        "y": 5.5
+        "x": 1.6585928806673316,
+        "y": 5.504093176517317
       },
       "isLocked": false,
-      "linkedName": "MB"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6,
-        "y": 5.55
+        "x": 1.47,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 2.2826808174767765,
-        "y": 5.55
+        "x": 1.6884442584969845,
+        "y": 5.506435343826476
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "X2"
+      "linkedName": "MB"
     }
   ],
   "rotationTargets": [],
@@ -33,24 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
         "data": {
@@ -58,7 +41,13 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 1.0
+                "waitTime": 2.0
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
               }
             }
           ]
@@ -67,8 +56,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -78,10 +67,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "X2",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

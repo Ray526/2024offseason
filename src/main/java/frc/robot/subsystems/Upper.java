@@ -86,31 +86,6 @@ public class Upper extends SubsystemBase {
         intake.set(speed);
     }
 
-    public Command IntakeCommand (double intakespeed, BooleanSupplier hasNote) {
-        Command c = new Command() {
-
-            @Override
-            public void execute() {
-                if(!hasNote.getAsBoolean()) {
-                    setIntake(intakespeed);
-                }
-            }
-
-            @Override
-            public void end(boolean interrupted) {
-                setIntake(0);
-                setIntake(0);
-            }
-
-            @Override
-            public boolean isFinished() {
-                return false;
-            }
-        };
-        c.addRequirements(this);
-        return c;
-    }
-
     // shooter
     public double getLeftShooterRPM () {
         return leftShooter.getEncoder().getVelocity();
@@ -137,6 +112,32 @@ public class Upper extends SubsystemBase {
         setRightShooter(speed);
     }
 
+    // Command factory
+    public Command IntakeCommand (double intakespeed, BooleanSupplier hasNote) {
+        Command c = new Command() {
+
+            @Override
+            public void execute() {
+                if(!hasNote.getAsBoolean()) {
+                    setIntake(intakespeed);
+                }
+            }
+
+            @Override
+            public void end(boolean interrupted) {
+                setIntake(0);
+                setIntake(0);
+            }
+
+            @Override
+            public boolean isFinished() {
+                return false;
+            }
+        };
+        c.addRequirements(this);
+        return c;
+    }
+    
     public Command BaseShootCommand(double speed) {
         Command c = new Command() {
             

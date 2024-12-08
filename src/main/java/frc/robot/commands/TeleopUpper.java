@@ -25,16 +25,7 @@ public class TeleopUpper extends Command {
 
     private final Upper s_Upper;
     private final XboxController controller;
-
-    private AngularVelocity intakeTarget;
-    private AngularVelocity shooterTarget;
-    private Rotation2d visionElbowTarget;
-
-    // Constants such as camera and target height stored. Change per robot and goal!
-    private final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7.4);
-    private final double TARGET_HEIGHT_METERS = Units.inchesToMeters(54);
-    // Angle between horizontal and the camera.
-    private final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(20);
+    
     //chage the name accordingly
     PhotonCamera camera = new PhotonCamera("photonvision");
 

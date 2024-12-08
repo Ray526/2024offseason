@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants;
-import frc.robot.Vision;
+// import frc.robot.Vision;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.RobotConstants;
 
@@ -103,9 +103,11 @@ public class Swerve extends SubsystemBase {
       },
       this
     );
+
     setPose(FieldConstants.BLUE_MB);
+
     }
-  
+
 
   public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(
@@ -226,19 +228,6 @@ public class Swerve extends SubsystemBase {
     // m_field.setRobotPose(getEstimatedPose());
     m_field.setRobotPose(getOdometryPose());
     SmartDashboard.putData("Field", m_field);
-    // tab.add("Yaw", getGyroYaw())
-    //   .withSize(2, 4)
-    //   .withPosition(0, 0);
-    // tab.add("AngularVel", AngularVel)
-    //   .withSize(2, 4)
-    //   .withPosition(2, 0);
-    // tab.add("OdometryX", getOdometryPose().getX())
-    //   .withSize(2, 4)
-    //   .withPosition(4, 0);
-    // tab.add("OdometryY", getOdometryPose().getY())
-    //   .withSize(2, 4)
-    //   .withPosition(6, 0);
-    // tab.add("OdometryRotation", getOdometryPose().getRotation().getRotations());
   }
 
   /** See {@link SwerveDrivePoseEstimator#addVisionMeasurement(Pose2d, double)}. */

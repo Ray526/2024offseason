@@ -26,7 +26,7 @@ import frc.robot.subsystems.Swerve;
 
 public class TeleopSwerve extends Command {
   private Swerve s_Swerve;
-  private frc.robot.Vision s_Vision;
+  // private frc.robot.Vision s_Vision;
   private XboxController driver;
 
   private SlewRateLimiter translationLimiter = new SlewRateLimiter(3.0);
@@ -55,9 +55,9 @@ public class TeleopSwerve extends Command {
   //chage the name accordingly
   PhotonCamera camera = new PhotonCamera("photonvision");
 
-  public TeleopSwerve(Swerve s_Swerve, frc.robot.Vision s_Vision, XboxController controller) {
+  public TeleopSwerve(Swerve s_Swerve, /*frc.robot.Vision s_Vision,*/ XboxController controller) {
     this.s_Swerve = s_Swerve;
-    this.s_Vision = s_Vision;
+    // this.s_Vision = s_Vision;
     this.driver = controller;
     addRequirements(s_Swerve);
   }
@@ -107,14 +107,14 @@ public class TeleopSwerve extends Command {
   //   SmartDashboard.putNumber("damm", vision.getBestTarget().getYaw());
   // }
 
-    if (s_Vision.hasTarget()) {
-      rotationVal = s_Vision.getAlignRotationVal();
-    } else {
+    // if (s_Vision.hasTarget()) {
+    //   rotationVal = s_Vision.getAlignRotationVal();
+    // } else {
       rotationVal = 
       rotationLimiter
         .calculate(MathUtil.applyDeadband(-driver.getRightX(), Constants.SwerveConstants.axisDeadBand))
         * SwerveConstants.maxAngularVelocity;
-    }
+    // }
 
     s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(SwerveConstants.maxModuleSpeed),
@@ -122,7 +122,7 @@ public class TeleopSwerve extends Command {
         false
       );
 
-    SmartDashboard.putBoolean("isAiming", s_Vision.hasTarget());
+    // SmartDashboard.putBoolean("isAiming", s_Vision.hasTarget());
   }
 
   @Override

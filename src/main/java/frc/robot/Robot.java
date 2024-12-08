@@ -7,9 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.UpperStateMachine;
-import frc.robot.subsystems.Swerve;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
