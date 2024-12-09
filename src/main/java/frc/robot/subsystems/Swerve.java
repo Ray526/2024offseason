@@ -27,6 +27,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -104,7 +105,9 @@ public class Swerve extends SubsystemBase {
       this
     );
 
-    setPose(FieldConstants.BLUE_MB);
+    setPose(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
+        ? FieldConstants.RED_MB
+        : FieldConstants.BLUE_MB);
 
     }
 

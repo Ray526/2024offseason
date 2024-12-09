@@ -148,6 +148,7 @@ public class Upper extends SubsystemBase {
 
             @Override
             public void end(boolean interrupted) {
+                setShooter(0);
                 setIntake(0);
                 setIntake(0);
             }
